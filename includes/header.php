@@ -1,7 +1,17 @@
 <?php
+/**
+ * includes/header.php
+ * Header reutilizable: sesiones, BD, meta, CSS, navbar
+ */
+
+// Iniciar sesión si no está activa
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Conectar BD
+require_once __DIR__ . '/../config/db.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,13 +19,18 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>MDSTOCK</title>
-  <meta name="description" content="MDSTOCK - Tienda Online">
-  <meta name="keywords" content="">
+  <title>MDSTOCK - Tienda Online</title>
+  <meta name="description" content="MDSTOCK - Tu tienda de confianza">
+  <meta name="keywords" content="tienda online, compras, productos">
 
   <!-- Favicons -->
   <link href="/mdstock/assets/img/minilogo.png" rel="icon">
   <link href="/mdstock/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/mdstock/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -27,10 +42,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
   <!-- Main CSS File -->
   <link href="/mdstock/assets/css/main.css" rel="stylesheet">
-
 </head>
 
-<body class="index-page">
+<body>
 
   <header id="header" class="header position-relative">
     <!-- Top Bar -->
@@ -76,7 +90,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="d-flex py-3 align-items-center justify-content-between">
 
           <!-- Logo -->
-          <a href="/mdstock/view/index.php" class="logo d-flex align-items-center">
+          <a href="/mdstock/index.php" class="logo d-flex align-items-center">
             <h1 class="sitename">MDSTOCK</h1>
           </a>
 
@@ -149,23 +163,7 @@ if (session_status() === PHP_SESSION_NONE) {
       </div>
     </div>
 
-    <!-- Navigation -->
-    <div class="header-nav">
-      <div class="container-fluid container-xl">
-        <div class="position-relative">
-          <nav id="navmenu" class="navmenu">
-            <ul>
-              <li><a href="/mdstock/view/index.php" class="active">Inicio</a></li>
-              <li><a href="/mdstock/view/about.php">Sobre nosotros</a></li>
-              <li><a href="/mdstock/pages/productos.php">Categorías</a></li>
-              <li><a href="/mdstock/pages/carrito.php">Carrito</a></li>
-              <li><a href="/mdstock/pages/checkout.php">Checkout</a></li>
-              <li><a href="/mdstock/view/contacto.php">Contacto</a></li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
+  <?php include 'navbar.php'; ?>
 
     <!-- Mobile Search Form -->
     <div class="collapse" id="mobileSearch">
