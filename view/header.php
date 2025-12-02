@@ -1,33 +1,41 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+<!-- Header (navbar, logo, menú, etc.) -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>MDSTOCK</title>
-  <meta name="description" content="MDSTOCK - Tienda Online">
+  <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="/mdstock/assets/img/minilogo.png" rel="icon">
-  <link href="/mdstock/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="/assets/img/minilogo.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="/mdstock/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/mdstock/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/mdstock/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="/mdstock/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="/mdstock/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/mdstock/assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="/mdstock/assets/css/main.css" rel="stylesheet">
+  <link href="/assets/css/main.css" rel="stylesheet">
 
+  <!-- =======================================================
+  * Template Name: eStore
+  * Template URL: https://bootstrapmade.com/estore-bootstrap-ecommerce-template/
+  * Updated: Apr 26 2025 with Bootstrap v5.3.5
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body class="index-page">
@@ -41,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="top-bar-item">
               <i class="bi bi-telephone-fill me-2"></i>
               <span>¿Necesitas llamarnos?: </span>
-              <a href="tel:+573026781363">+57 302 6781363</a>
+              <a href="tel:+1234567890">+57 302 6781363</a>
             </div>
           </div>
 
@@ -60,9 +68,9 @@ if (session_status() === PHP_SESSION_NONE) {
                 }
               </script>
               <div class="swiper-wrapper">
-                <div class="swiper-slide">🚚 Envío gratis en compras mayores a $50</div>
-                <div class="swiper-slide">💰 Garantía de devolución 30 días</div>
-                <div class="swiper-slide">🎁 20% descuento en tu primer pedido</div>
+                <div class="swiper-slide">🚚 Free shipping on orders over $50</div>
+                <div class="swiper-slide">💰 30 days money back guarantee.</div>
+                <div class="swiper-slide">🎁 20% off on your first order</div>
               </div>
             </div>
           </div>
@@ -76,14 +84,16 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="d-flex py-3 align-items-center justify-content-between">
 
           <!-- Logo -->
-          <a href="/mdstock/view/index.php" class="logo d-flex align-items-center">
+          <a href="index.php" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.webp" alt=""> -->
             <h1 class="sitename">MDSTOCK</h1>
           </a>
 
           <!-- Search -->
-          <form class="search-form desktop-search-form" action="/mdstock/buscar.php" method="GET">
+          <form class="search-form desktop-search-form">
             <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Buscar productos">
+              <input type="text" class="form-control" placeholder="Search for products">
               <button class="btn" type="submit">
                 <i class="bi bi-search"></i>
               </button>
@@ -106,37 +116,41 @@ if (session_status() === PHP_SESSION_NONE) {
               <div class="dropdown-menu">
                 <div class="dropdown-header">
                   <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
-                  <p class="mb-0">Accede a tu cuenta &amp; gestiona tus pedidos</p>
+                  <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
                 </div>
                 <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="/mdstock/pages/perfil.php">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
                     <i class="bi bi-person-circle me-2"></i>
-                    <span>Mi perfil</span>
+                    <span>Mi perffil</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="/mdstock/pages/mis-ordenes.php">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
                     <i class="bi bi-bag-check me-2"></i>
-                    <span>Mis órdenes</span>
+                    <span>Mis ordenes</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="/mdstock/pages/carrito.php">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
                     <i class="bi bi-heart me-2"></i>
-                    <span>Mi carrito</span>
+                    <span>Mi lista de deseos</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <i class="bi bi-gear me-2"></i>
+                    <span>Configuración</span>
                   </a>
                 </div>
                 <div class="dropdown-footer">
-                  <a href="/mdstock/pages/login.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
-                  <a href="/mdstock/pages/registro.php" class="btn btn-outline-primary w-100">Registrarse</a>
+                  <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
+                  <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
                 </div>
               </div>
             </div>
 
             <!-- Wishlist -->
-            <a href="/mdstock/pages/perfil.php" class="header-action-btn d-none d-md-block">
+            <a href="account.html" class="header-action-btn d-none d-md-block">
               <i class="bi bi-heart"></i>
               <span class="badge">0</span>
             </a>
 
             <!-- Cart -->
-            <a href="/mdstock/pages/carrito.php" class="header-action-btn">
+            <a href="cart.html" class="header-action-btn">
               <i class="bi bi-cart3"></i>
               <span class="badge">3</span>
             </a>
@@ -155,12 +169,139 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="position-relative">
           <nav id="navmenu" class="navmenu">
             <ul>
-              <li><a href="/mdstock/view/index.php" class="active">Inicio</a></li>
-              <li><a href="/mdstock/view/about.php">Sobre nosotros</a></li>
-              <li><a href="/mdstock/pages/productos.php">Categorías</a></li>
-              <li><a href="/mdstock/pages/carrito.php">Carrito</a></li>
-              <li><a href="/mdstock/pages/checkout.php">Checkout</a></li>
-              <li><a href="/mdstock/view/contacto.php">Contacto</a></li>
+              <li><a href="index.php" class="active">Inicio</a></li>
+              <li><a href="about.html">Sobre nosotros</a></li>
+                <li><a href="/view/pages/category.php">Categorias</a></li>
+              <li><a href="product-details.html">Detalles de los productos</a></li>
+              <li><a href="cart.html">Carrito</a></li>
+              <li><a href="checkout.html">Checkout</a></li>
+               <!-- Products Mega Menu 1 -->
+              <li class="products-megamenu-1"><a href="#"><span>Megamenu 1</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+
+                <!-- Products Mega Menu 1 Mobile View -->
+                <ul class="mobile-megamenu">
+
+                  <li><a href="#">Featured Products</a></li>
+                  <li><a href="#">New Arrivals</a></li>
+                  <li><a href="#">Sale Items</a></li>
+
+                  <li class="dropdown"><a href="#"><span>Clothing</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Men's Wear</a></li>
+                      <li><a href="#">Women's Wear</a></li>
+                      <li><a href="#">Kids Collection</a></li>
+                      <li><a href="#">Sportswear</a></li>
+                      <li><a href="#">Accessories</a></li>
+                    </ul>
+                  </li>
+
+                  <li class="dropdown"><a href="#"><span>Electronics</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Smartphones</a></li>
+                      <li><a href="#">Laptops</a></li>
+                      <li><a href="#">Audio Devices</a></li>
+                      <li><a href="#">Smart Home</a></li>
+                      <li><a href="#">Accessories</a></li>
+                    </ul>
+                  </li>
+
+                  <li class="dropdown"><a href="#"><span>Home &amp; Living</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Furniture</a></li>
+                      <li><a href="#">Decor</a></li>
+                      <li><a href="#">Kitchen</a></li>
+                      <li><a href="#">Bedding</a></li>
+                      <li><a href="#">Lighting</a></li>
+                    </ul>
+                  </li>
+
+                  <li class="dropdown"><a href="#"><span>Beauty</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Skincare</a></li>
+                      <li><a href="#">Makeup</a></li>
+                      <li><a href="#">Haircare</a></li>
+                      <li><a href="#">Fragrances</a></li>
+                      <li><a href="#">Personal Care</a></li>
+                    </ul>
+                  </li>
+
+                </ul><!-- End Products Mega Menu 1 Mobile View -->
+
+                <!-- Products Mega Menu 1 Desktop View -->
+                <div class="desktop-megamenu">
+
+                  <div class="megamenu-tabs">
+                    <ul class="nav nav-tabs" id="productMegaMenuTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#category-content-1862" type="button" aria-selected="false" tabindex="-1" role="tab">Categories</button>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Tabs Content -->
+                  <div class="megamenu-content tab-content">
+
+                  
+                    <!-- Categories Tab -->
+                    <div class="tab-pane fade" id="category-content-1862" role="tabpanel" aria-labelledby="category-tab">
+                      <div class="category-grid">
+                        <div class="category-column">
+                          <h4>Bebidas</h4>
+                          <ul>
+                            <li><a href="#">Agua</a></li>
+                            <li><a href="#">Refrescos</a></li>
+                            <li><a href="#">Jugos</a></li>
+                            <li><a href="#">Energizantes</a></li>
+                            <li><a href="#">Cervezas</a></li>
+                            <li><a href="#">Vinos</a></li>
+                            <li><a href="#">Licores</a></li>
+                          </ul>
+                        </div>
+                        <div class="category-column">
+                          <h4>Despensa</h4>
+                          <ul>
+                            <li><a href="#">Arroz</a></li>
+                            <li><a href="#">Pastas</a></li>
+                            <li><a href="#">Aceites</a></li>
+                            <li><a href="#">Enlatados</a></li>
+                            <li><a href="#">Harinas</a></li>
+                            <li><a href="#">Salsas</a></li>
+                            <li><a href="#">Azúcar</a></li>
+                          </ul>
+                        </div>
+                        <div class="category-column">
+                          <h4>Snacks</h4>
+                          <ul>
+                            <li><a href="#">Papas fritas</a></li>
+                            <li><a href="#">Galletas</a></li>
+                            <li><a href="#">Frutos secos</a></li>
+                            <li><a href="#">Palomitas</a></li>
+                            <li><a href="#">Barritas</a></li>
+                            <li><a href="#">Chicharrones</a></li>
+                          </ul>
+                        </div>
+                        <div class="category-column">
+                          <h4>Dulcería</h4>
+                          <ul>
+                            <li><a href="#">Chocolates</a></li>
+                            <li><a href="#">Caramelos</a></li>
+                            <li><a href="#">Chicles</a></li>
+                            <li><a href="#">Gomitas</a></li>
+                            <li><a href="#">Paletas</a></li>
+                            <li><a href="#">Malvaviscos</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div><!-- End Products Mega Menu 1 Desktop View -->
+
+              </li><!
+              <li><a href="contact.php">Contact</a></li>
+
+
             </ul>
           </nav>
         </div>
@@ -170,9 +311,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Mobile Search Form -->
     <div class="collapse" id="mobileSearch">
       <div class="container">
-        <form class="search-form" action="/mdstock/buscar.php" method="GET">
+        <form class="search-form">
           <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Buscar productos">
+            <input type="text" class="form-control" placeholder="Search for products">
             <button class="btn" type="submit">
               <i class="bi bi-search"></i>
             </button>
