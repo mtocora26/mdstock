@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php require_once '../header.php'; ?>
 
 <main class="main">
 
@@ -8,7 +8,7 @@
         <h1 class="mb-2 mb-lg-0">About</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="../index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li class="current">About</li>
           </ol>
         </nav>
@@ -238,4 +238,4 @@
 
 </main>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
