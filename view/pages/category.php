@@ -4,6 +4,9 @@ require_once '../../controller/ProductoController.php';
 
 $categoria_id = isset($_GET['categoria']) ? $_GET['categoria'] : null;
 $productos = ProductoController::productosPorCategoria($categoria_id);
+if (!is_array($productos)) {
+    $productos = [];
+}
 
 // Paginación
 $productos_por_pagina = 8;
@@ -20,12 +23,7 @@ $productos_pagina = array_slice($productos, $inicio, $productos_por_pagina);
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
         <h1 class="mb-2 mb-lg-0">Category</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.php">Home</a></li>
-            <li class="current">Category</li>
-          </ol>
-        </nav>
+  
       </div>
     </div><!-- End Page Title -->
 
@@ -80,7 +78,7 @@ $productos_pagina = array_slice($productos, $inicio, $productos_por_pagina);
                       <img src="<?php echo $producto->imagen; ?>" alt="Product Image" class="main-img" loading="lazy">
                       <div class="product-thumb-overlay">
                         <button type="button" class="add-to-cart-btn w-100<?php echo ($producto->stock <= 0) ? ' disabled' : ''; ?>">
-                          <?php echo ($producto->stock <= 0) ? 'Sin stock' : 'Add to Cart'; ?>
+                          <?php echo ($producto->stock <= 0) ? 'Sin stock' : 'Agregar al carrito'; ?>
                         </button>
                       </div>
                     </div>

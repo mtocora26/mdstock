@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+?>
 <!-- Header (navbar, logo, menú, etc.) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -92,9 +97,9 @@
           </a>
 
           <!-- Search -->
-          <form class="search-form desktop-search-form">
+          <form class="search-form desktop-search-form" method="post" action="/view/pages/search-results.php">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Buscar productos">
+              <input type="text" class="form-control" placeholder="Buscar productos" name="search">
               <button class="btn" type="submit">
                 <i class="bi bi-search"></i>
               </button>
@@ -115,32 +120,62 @@
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
-                  <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
-                </div>
-                <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
-                    <i class="bi bi-person-circle me-2"></i>
-                    <span>Mi perffil</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
-                    <i class="bi bi-bag-check me-2"></i>
-                    <span>Mis ordenes</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
-                    <i class="bi bi-heart me-2"></i>
-                    <span>Mi lista de deseos</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.html">
-                    <i class="bi bi-gear me-2"></i>
-                    <span>Configuración</span>
-                  </a>
-                </div>
-                <div class="dropdown-footer">
-                  <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
-                  <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
-                </div>
+                <?php if (isset($_SESSION['usuario'])) { ?>
+                  <div class="dropdown-header">
+                    <h6>Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombres']); ?></h6>
+                    <p class="mb-0">Accede a tu cuenta &amp; gestiona tus pedidos</p>
+                  </div>
+                  <div class="dropdown-body">
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-person-circle me-2"></i>
+                      <span>Mi perfil</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-bag-check me-2"></i>
+                      <span>Mis ordenes</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-heart me-2"></i>
+                      <span>Mi lista de deseos</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-gear me-2"></i>
+                      <span>Configuración</span>
+                    </a>
+                  </div>
+                  <div class="dropdown-footer">
+                    <form action="../controller/LogoutController.php" method="post">
+                      <button type="submit" class="btn btn-danger w-100">Cerrar sesión</button>
+                    </form>
+                  </div>
+                <?php } else { ?>
+                  <div class="dropdown-header">
+                    <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
+                    <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
+                  </div>
+                  <div class="dropdown-body">
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-person-circle me-2"></i>
+                      <span>Mi perfil</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-bag-check me-2"></i>
+                      <span>Mis ordenes</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-heart me-2"></i>
+                      <span>Mi lista de deseos</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                      <i class="bi bi-gear me-2"></i>
+                      <span>Configuración</span>
+                    </a>
+                  </div>
+                  <div class="dropdown-footer">
+                    <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
+                    <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
+                  </div>
+                <?php } ?>
               </div>
             </div>
 
@@ -172,8 +207,6 @@
             <ul>
               <li><a href="index.php" class="active">Inicio</a></li>
               <li><a href="category.php">Categorias</a></li>
-              <li><a href="product-details.php">Detalles de los productos</a></li>
-              <li><a href="cart.php">Carrito</a></li>
               <li><a href="about.php">Sobre nosotros</a></li>
               <li><a href="checkout.html">Checkout</a></li>
               <li><a href="contact.php">Contactanos</a></li>
@@ -186,9 +219,9 @@
     <!-- Mobile Search Form -->
     <div class="collapse" id="mobileSearch">
       <div class="container">
-        <form class="search-form">
+        <form class="search-form" method="post" action="/view/pages/search-results.php">
           <div class="input-group">
-                  <input type="text" class="form-control" id="search-products-mobile" name="search-products-mobile" placeholder="Search for products">
+                  <input type="text" class="form-control" id="search-products-mobile" name="search" placeholder="Buscar productos">
             <button class="btn" type="submit">
               <i class="bi bi-search"></i>
             </button>
