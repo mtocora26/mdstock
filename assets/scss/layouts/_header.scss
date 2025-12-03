@@ -87,8 +87,10 @@
       line-height: 1;
 
       img {
-        max-height: 32px;
+        width: 200px;
+        height: 140px;
         margin-right: 8px;
+        object-fit: contain;
       }
 
       h1 {

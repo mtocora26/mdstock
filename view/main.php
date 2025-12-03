@@ -69,8 +69,8 @@
               <div class="icon-box">
                 <i class="bi bi-truck"></i>
               </div>
-              <h3>Free Shipping</h3>
-              <p>Nulla sit morbi vestibulum eros duis amet, consectetur vitae lacus. Ut quis tempor felis sed nunc viverra.</p>
+              <h3>Envío Gratis</h3>
+              <p>Ofrecemos envío gratuito en pedidos superiores a [monto mínimo], dentro de nuestra zona de cobertura.</p>
             </div>
           </div><!-- End Info Card 1 -->
 
@@ -80,8 +80,8 @@
               <div class="icon-box">
                 <i class="bi bi-piggy-bank"></i>
               </div>
-              <h3>Money Back Guarantee</h3>
-              <p>Nullam gravida felis ac nunc tincidunt, sed malesuada justo pulvinar. Vestibulum nec diam vitae eros.</p>
+              <h3>Garantía de Devolución</h3>
+              <p>Si tu pedido llega en mal estado o incompleto, te devolvemos el dinero o reemplazamos el producto.</p>
             </div>
           </div><!-- End Info Card 2 -->
 
@@ -91,8 +91,8 @@
               <div class="icon-box">
                 <i class="bi bi-percent"></i>
               </div>
-              <h3>Discount Offers</h3>
-              <p>Nulla ipsum nisi vel adipiscing amet, dignissim consectetur ornare. Vestibulum quis posuere elit auctor.</p>
+              <h3>Ofertas y Descuentos</h3>
+              <p>Aprovecha nuestras promociones especiales en productos seleccionados cada semana.</p>
             </div>
           </div><!-- End Info Card 3 -->
 
@@ -102,8 +102,8 @@
               <div class="icon-box">
                 <i class="bi bi-headset"></i>
               </div>
-              <h3>24/7 Support</h3>
-              <p>Ipsum dolor amet sit consectetur adipiscing, nullam vitae euismod tempor nunc felis vestibulum ornare.</p>
+              <h3>Atención al Cliente</h3>
+              <p>Cubrimos tus consultas y pedidos en horario comercial: Lunes a Sábado, 8:00 a.m a 6:00 p.m.</p>
             </div>
           </div><!-- End Info Card 4 -->
         </div>
@@ -163,11 +163,11 @@
             <div class="swiper-slide">
               <div class="category-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="category-image">
-                  <img src="/assets/img/product/product-1.webp" alt="Category" class="img-fluid">
+                  <img src="/assets/img/product/Categoria-bebida.png" alt="Category" class="img-fluid">
                 </div>
-                <h3 class="category-title">Vestibulum ante</h3>
-                <p class="category-count">4 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
+                <h3 class="category-title">Categoria de Bebidas</h3>
+                <p class="category-count">en stock</p>
+                <a href="category.php" class="stretched-link"></a>
               </div>
             </div>
 
@@ -175,11 +175,11 @@
             <div class="swiper-slide">
               <div class="category-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="category-image">
-                  <img src="/assets/img/product/product-6.webp" alt="Category" class="img-fluid">
+                  <img src="/assets/img/product/Categoria-dulceria.png" alt="Category" class="img-fluid">
                 </div>
-                <h3 class="category-title">Maecenas nec</h3>
-                <p class="category-count">8 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
+                <h3 class="category-title">Categoria Dulcería</h3>
+                <p class="category-count">en stock</p>
+                <a href="category.php" class="stretched-link"></a>
               </div>
             </div>
 
@@ -187,77 +187,13 @@
             <div class="swiper-slide">
               <div class="category-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="category-image">
-                  <img src="/assets/img/product/product-9.webp" alt="Category" class="img-fluid">
+                  <img src="/assets/img/product/Categoria-snacks.png" alt="Category" class="img-fluid">
                 </div>
-                <h3 class="category-title">Aenean tellus</h3>
-                <p class="category-count">4 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
+                <h3 class="category-title">Categoria Snacks</h3>
+                <p class="category-count">en stock</p>
+                <a href="category.php" class="stretched-link"></a>
               </div>
             </div>
-
-            <!-- Category Card 4 -->
-            <div class="swiper-slide">
-              <div class="category-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="category-image">
-                  <img src="/assets/img/product/product-f-1.webp" alt="Category" class="img-fluid">
-                </div>
-                <h3 class="category-title">Donec quam</h3>
-                <p class="category-count">12 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
-              </div>
-            </div>
-
-            <!-- Category Card 5 -->
-            <div class="swiper-slide">
-              <div class="category-card" data-aos="fade-up" data-aos-delay="500">
-                <div class="category-image">
-                  <img src="/assets/img/product/product-10.webp" alt="Category" class="img-fluid">
-                </div>
-                <h3 class="category-title">Phasellus leo</h3>
-                <p class="category-count">4 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
-              </div>
-            </div>
-
-            <!-- Category Card 6 -->
-            <div class="swiper-slide">
-              <div class="category-card" data-aos="fade-up" data-aos-delay="600">
-                <div class="category-image">
-                  <img src="/assets/img/product/product-m-1.webp" alt="Category" class="img-fluid">
-                </div>
-                <h3 class="category-title">Quisque rutrum</h3>
-                <p class="category-count">2 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
-              </div>
-            </div>
-
-            <!-- Category Card 7 -->
-            <div class="swiper-slide">
-              <div class="category-card" data-aos="fade-up" data-aos-delay="700">
-                <div class="category-image">
-                  <img src="/assets/img/product/product-10.webp" alt="Category" class="img-fluid">
-                </div>
-                <h3 class="category-title">Etiam ultricies</h3>
-                <p class="category-count">4 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
-              </div>
-            </div>
-
-            <!-- Category Card 8 -->
-            <div class="swiper-slide">
-              <div class="category-card" data-aos="fade-up" data-aos-delay="800">
-                <div class="category-image">
-                  <img src="/assets/img/product/product-2.webp" alt="Category" class="img-fluid">
-                </div>
-                <h3 class="category-title">Fusce fermentum</h3>
-                <p class="category-count">4 Products</p>
-                <a href="ctaegory.html" class="stretched-link"></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
         </div>
 
       </div>
