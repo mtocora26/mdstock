@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Support - eStore Bootstrap Template</title>
+  <title>Order Confirmation - eStore Bootstrap Template</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -37,7 +37,7 @@
   ======================================================== -->
 </head>
 
-<body class="support-page">
+<body class="order-confirmation-page">
 
   <header id="header" class="header position-relative">
     <!-- Top Bar -->
@@ -118,7 +118,7 @@
           <!-- Search -->
           <form class="search-form desktop-search-form">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for products">
+              <input type="text" class="form-control" id="search-products-confirmation" name="search-products-confirmation" placeholder="Search for products">
               <button class="btn" type="submit">
                 <i class="bi bi-search"></i>
               </button>
@@ -787,7 +787,7 @@
       <div class="container">
         <form class="search-form">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for products">
+            <input type="text" class="form-control" id="search-products-confirmation-mobile" name="search-products-confirmation-mobile" placeholder="Search for products">
             <button class="btn" type="submit">
               <i class="bi bi-search"></i>
             </button>
@@ -803,190 +803,143 @@
     <!-- Page Title -->
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Support</h1>
+        <h1 class="mb-2 mb-lg-0">Order Confirmation</h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">Support</li>
+            <li class="current">Order Confirmation</li>
           </ol>
         </nav>
       </div>
     </div><!-- End Page Title -->
 
-    <!-- Support Section -->
-    <section id="support" class="support section">
+    <!-- Order Confirmation Section -->
+    <section id="order-confirmation" class="order-confirmation section">
 
-      <div class="container" data-aos="fade-up">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <!-- Support Header -->
-        <div class="support-header" data-aos="fade-up">
-          <div class="header-content">
-            <h2>Help &amp; Support Center</h2>
-            <p>Find answers, tutorials, and help from our support team</p>
-          </div>
-        </div>
-
-        <!-- Quick Support Actions -->
-        <div class="quick-support" data-aos="fade-up" data-aos-delay="100">
-          <div class="action-item live-chat">
-            <div class="action-content">
-              <i class="bi bi-chat-text"></i>
-              <h4>Live Chat</h4>
-              <p>Chat with our support team</p>
-              <a href="#" class="action-button">Start Chat</a>
+        <div class="order-confirmation-1">
+          <div class="confirmation-header text-center" data-aos="fade-up">
+            <div class="success-icon mb-4">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h2>Order Placed Successfully!</h2>
+            <p class="lead">Thank you for your purchase. We've received your order and are processing it now.</p>
+            <div class="order-number mt-3 mb-4">
+              <span>Order #</span>
+              <strong>ORD-7853294</strong>
+              <span class="mx-2">•</span>
+              <span>February 26, 2025</span>
             </div>
           </div>
 
-          <div class="action-item phone">
-            <div class="action-content">
-              <i class="bi bi-telephone"></i>
-              <h4>Call Us</h4>
-              <p>24/7 support line</p>
-              <a href="tel:1234567890" class="action-button">+1 (555) 123-4567</a>
-            </div>
-          </div>
-
-          <div class="action-item email">
-            <div class="action-content">
-              <i class="bi bi-envelope"></i>
-              <h4>Email Support</h4>
-              <p>Get email support</p>
-              <a href="#" class="action-button">Send Email</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Help Topics -->
-        <div class="help-categories" data-aos="fade-up" data-aos-delay="200">
-          <h3>Popular Help Topics</h3>
-          <div class="category-cards">
-            <a href="#" class="category-card" data-aos="zoom-in" data-aos-delay="100">
-              <span class="icon"><i class="bi bi-box-seam"></i></span>
-              <h5>Orders &amp; Shipping</h5>
-              <ul>
-                <li>Track your order</li>
-                <li>Shipping methods</li>
-                <li>Returns &amp; exchanges</li>
-              </ul>
-              <span class="arrow"><i class="bi bi-arrow-right"></i></span>
-            </a>
-
-            <a href="#" class="category-card" data-aos="zoom-in" data-aos-delay="200">
-              <span class="icon"><i class="bi bi-wallet2"></i></span>
-              <h5>Billing &amp; Payments</h5>
-              <ul>
-                <li>Payment methods</li>
-                <li>Invoices</li>
-                <li>Refund status</li>
-              </ul>
-              <span class="arrow"><i class="bi bi-arrow-right"></i></span>
-            </a>
-
-            <a href="#" class="category-card" data-aos="zoom-in" data-aos-delay="300">
-              <span class="icon"><i class="bi bi-person-gear"></i></span>
-              <h5>Account Settings</h5>
-              <ul>
-                <li>Profile management</li>
-                <li>Password reset</li>
-                <li>Privacy settings</li>
-              </ul>
-              <span class="arrow"><i class="bi bi-arrow-right"></i></span>
-            </a>
-
-            <a href="#" class="category-card" data-aos="zoom-in" data-aos-delay="400">
-              <span class="icon"><i class="bi bi-shield-check"></i></span>
-              <h5>Security</h5>
-              <ul>
-                <li>Account security</li>
-                <li>Two-factor auth</li>
-                <li>Privacy policy</li>
-              </ul>
-              <span class="arrow"><i class="bi bi-arrow-right"></i></span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Self Help -->
-        <div class="self-help" data-aos="fade-up" data-aos-delay="300">
-          <div class="row align-items-center">
-            <div class="col-lg-6">
-              <div class="content-box">
-                <h3>Self-Help Resources</h3>
-                <p class="subtitle">Find answers quickly with our comprehensive resources</p>
-                <div class="resource-links">
-                  <a href="#" class="resource-link">
-                    <i class="bi bi-play-circle"></i>
-                    <div class="link-content">
-                      <h6>Video Tutorials</h6>
-                      <p>Step-by-step video guides</p>
-                    </div>
-                  </a>
-                  <a href="#" class="resource-link">
-                    <i class="bi bi-file-text"></i>
-                    <div class="link-content">
-                      <h6>User Guides</h6>
-                      <p>Detailed documentation</p>
-                    </div>
-                  </a>
-                  <a href="#" class="resource-link">
-                    <i class="bi bi-book"></i>
-                    <div class="link-content">
-                      <h6>Knowledge Base</h6>
-                      <p>Articles and tutorials</p>
-                    </div>
-                  </a>
-                  <a href="#" class="resource-link">
-                    <i class="bi bi-tools"></i>
-                    <div class="link-content">
-                      <h6>Troubleshooting</h6>
-                      <p>Common issues and fixes</p>
-                    </div>
-                  </a>
+          <div class="order-details p-4 mb-4" data-aos="fade-up" data-aos-delay="150">
+            <div class="row">
+              <div class="col-md-6 mb-4 mb-md-0">
+                <h4>Shipping Information</h4>
+                <address class="mt-3">
+                  <strong>Alex Johnson</strong><br>
+                  1234 Cedar Avenue<br>
+                  Portland, OR 97205<br>
+                  United States<br>
+                  <i class="bi bi-telephone-fill me-1 text-muted small"></i> (503) 555-7890
+                </address>
+                <div class="mt-3">
+                  <span class="shipping-method">
+                    <i class="bi bi-truck me-2"></i>Standard Shipping (3-5 business days)
+                  </span>
                 </div>
               </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="faq-section">
-                <h4>Common Questions</h4>
-                <div class="faq-list">
-                  <div class="faq-item">
-                    <h3>
-                      How do I track my order?
-                      <i class="bi bi-plus faq-toggle"></i>
-                    </h3>
-                    <div class="faq-answer">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. You can track your order using your order number in the tracking section.</p>
-                    </div>
+              <div class="col-md-6">
+                <h4>Payment Information</h4>
+                <div class="payment-info mt-3">
+                  <div class="payment-method mb-2">
+                    <i class="bi bi-credit-card me-2"></i>
+                    <span>Visa ending in 4832</span>
                   </div>
-
-                  <div class="faq-item">
-                    <h3>
-                      Can I change my shipping address?
-                      <i class="bi bi-plus faq-toggle"></i>
-                    </h3>
-                    <div class="faq-answer">
-                      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Contact support to change your shipping address before the item ships.</p>
-                    </div>
-                  </div>
-
-                  <div class="faq-item">
-                    <h3>
-                      What payment methods do you accept?
-                      <i class="bi bi-plus faq-toggle"></i>
-                    </h3>
-                    <div class="faq-answer">
-                      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. We accept all major credit cards and PayPal.</p>
-                    </div>
+                  <div class="billing-address">
+                    <strong>Billing Address:</strong> Same as shipping
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="order-summary mb-4" data-aos="fade-up" data-aos-delay="200">
+            <h4>Order Summary</h4>
+            <div class="order-items mt-3">
+              <div class="item-row d-flex">
+                <div class="item-image">
+                  <img src="assets/img/product/product-1.webp" alt="Product" class="img-fluid" loading="lazy">
+                </div>
+                <div class="item-details">
+                  <h5>Minimalist Wristwatch</h5>
+                  <p class="text-muted">Color: Black / Size: Medium</p>
+                  <div class="quantity-price d-flex justify-content-between">
+                    <span>Qty: 1</span>
+                    <span class="price">$129.99</span>
+                  </div>
+                </div>
+              </div>
+              <div class="item-row d-flex">
+                <div class="item-image">
+                  <img src="assets/img/product/product-3.webp" alt="Product" class="img-fluid" loading="lazy">
+                </div>
+                <div class="item-details">
+                  <h5>Premium Leather Wallet</h5>
+                  <p class="text-muted">Color: Brown</p>
+                  <div class="quantity-price d-flex justify-content-between">
+                    <span>Qty: 1</span>
+                    <span class="price">$49.99</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-totals mt-4">
+              <div class="d-flex justify-content-between py-2">
+                <span>Subtotal</span>
+                <span>$179.98</span>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>Shipping</span>
+                <span>$5.99</span>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>Tax</span>
+                <span>$17.99</span>
+              </div>
+              <div class="d-flex justify-content-between py-2 total-row">
+                <strong>Total</strong>
+                <strong>$203.96</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="next-steps text-center p-4" data-aos="fade-up" data-aos-delay="250">
+            <h4>What's Next?</h4>
+            <p>You'll receive an email confirmation shortly at <strong>alex.johnson@example.com</strong></p>
+            <div class="tracking-info mb-4">
+              <i class="bi bi-envelope me-2"></i>We'll send tracking information once your order ships
+            </div>
+            <div class="action-buttons">
+              <a href="#" class="btn btn-primary me-3 mb-2 mb-md-0">
+                <i class="bi bi-bag me-2"></i>Continue Shopping
+              </a>
+              <a href="#" class="btn btn-outline-primary">
+                <i class="bi bi-person me-2"></i>View Order History
+              </a>
+            </div>
+          </div>
+
+          <div class="help-contact text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+            <p>Need help with your order? <a href="support.html">Contact our support team</a></p>
           </div>
         </div>
 
       </div>
 
-    </section><!-- /Support Section -->
+    </section><!-- /Order Confirmation Section -->
 
   </main>
 

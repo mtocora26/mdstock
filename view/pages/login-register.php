@@ -1,4 +1,4 @@
-<?php require_once 'header.php'; ?>
+<?php require_once '../header.php'; ?>
 
 <main class="main">
   <!-- Page Title -->
@@ -37,14 +37,19 @@
             <div class="tab-content">
               <!-- Login Form -->
               <div class="tab-pane fade show active" id="login-register-login-form" role="tabpanel">
-                <form>
+                <form action="../../controller/LoginController.php" method="POST">
                   <div class="mb-4">
                     <label for="login-register-login-email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="login-register-login-email" required="">
+                    <input type="email" class="form-control" id="login-register-login-email" name="correo" required="">
                   </div>
                   <div class="mb-4">
                     <label for="login-register-login-password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="login-register-login-password" required="">
+                    <div class="input-group">
+                      <input type="password" class="form-control" id="login-register-login-password" name="password" required="">
+                      <span class="input-group-text toggle-password" data-target="login-register-login-password">
+                        <i class="fa fa-eye"></i>
+                      </span>
+                    </div>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="form-check">
@@ -60,36 +65,52 @@
               </div>
               <!-- Registration Form -->
               <div class="tab-pane fade" id="login-register-registration-form" role="tabpanel">
-                <form>
+                <form action="../../controller/UsuarioController.php" method="POST">
                   <div class="row g-3">
                     <div class="col-sm-6">
                       <div class="mb-4">
                         <label for="login-register-reg-firstname" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="login-register-reg-firstname" required="">
+                        <input type="text" class="form-control" name="nombres" id="login-register-reg-firstname" required="">
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="mb-4">
                         <label for="login-register-reg-lastname" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="login-register-reg-lastname" required="">
+                        <input type="text" class="form-control" name="apellidos" id="login-register-reg-lastname" required="">
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="mb-4">
                         <label for="login-register-reg-email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="login-register-reg-email" required="">
+                        <input type="email" class="form-control" name="correo" id="login-register-reg-email" required="">
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="mb-4">
+                        <label for="login-register-reg-phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="telefono" id="login-register-reg-phone" required="">
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="mb-4">
                         <label for="login-register-reg-password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="login-register-reg-password" required="">
+                        <div class="input-group">
+                          <input type="password" class="form-control" name="password" id="login-register-reg-password" required="">
+                          <span class="input-group-text toggle-password" data-target="login-register-reg-password">
+                            <i class="fa fa-eye"></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="mb-4">
                         <label for="login-register-reg-confirm-password" class="form-label">Confirm password</label>
-                        <input type="password" class="form-control" id="login-register-reg-confirm-password" required="">
+                        <div class="input-group">
+                          <input type="password" class="form-control" id="login-register-reg-confirm-password" required="">
+                          <span class="input-group-text toggle-password" data-target="login-register-reg-confirm-password">
+                            <i class="fa fa-eye"></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div class="col-12">
@@ -116,4 +137,4 @@
   </section>
 </main>
 
-<?php require_once 'footer.php'; ?>
+<?php require_once '../footer.php'; ?>

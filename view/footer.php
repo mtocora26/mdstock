@@ -124,6 +124,9 @@
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
 
+  <!-- Login JS for password eye -->
+  <script src="/assets/js/login.js"></script>
+
 </body>
 
 </html>
