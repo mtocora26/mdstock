@@ -174,35 +174,7 @@ if (session_status() === PHP_SESSION_NONE) {
                       <button type="submit" class="btn btn-danger w-100">Cerrar sesión</button>
                     </form>
                   </div>
-                <?php } else { ?>
-                  <div class="dropdown-header">
-                    <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
-                    <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
-                  </div>
-                  <div class="dropdown-body">
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
-                      <i class="bi bi-person-circle me-2"></i>
-                      <span>Mi perfil</span>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
-                      <i class="bi bi-bag-check me-2"></i>
-                      <span>Mis ordenes</span>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
-                      <i class="bi bi-heart me-2"></i>
-                      <span>Mi lista de deseos</span>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
-                      <i class="bi bi-gear me-2"></i>
-                      <span>Configuración</span>
-                    </a>
-                  </div>
-                  <div class="dropdown-footer">
-                    <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
-                    <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
-                  </div>
                 <?php } ?>
-              </div>
             </div>
 
             <!-- Cart -->
