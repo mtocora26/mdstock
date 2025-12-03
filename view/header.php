@@ -85,7 +85,7 @@
 
           <!-- Logo -->
           <a href="index.php" class="logo d-flex align-items-center">
-           <!--<img src="../../assets/img/logo-mdstock.png" alt="MDSTOCK Logo" width="500" height="500">-->
+          <!--  <img src="../../assets/img/logo-mdstock.png" alt="MDSTOCK Logo" width="500" height="500">-->
             <h1 class="sitename">MDSTOCK</h1>
           </a>
 
