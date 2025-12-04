@@ -1,0 +1,9 @@
+2025-12-04 04:20:29 - Inicio del script
+2025-12-04 04:20:29 - Petición POST recibida
+2025-12-04 04:20:29 - Creando pedido...
+2025-12-04 04:20:29 - Pedido creado con ID: 11
+2025-12-04 04:20:29 - Agregando detalles...
+2025-12-04 04:20:29 - Agregando producto 5
+2025-12-04 04:20:29 - Agregando producto 6
+2025-12-04 04:20:29 - Haciendo commit...
+2025-12-04 04:20:29 - Commit exitoso

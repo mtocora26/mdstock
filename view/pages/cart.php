@@ -61,6 +61,11 @@
                             </div>
                             <div class="product-details">
                               <h6 class="product-title"><?php echo htmlspecialchars($nombre); ?></h6>
+                              <?php if ($nombre === 'Lokiño caramelo masticable 100und'): ?>
+                                <p class="product-description" style="font-size:14px; color:#555; margin-bottom:8px;">
+                                  Caramelo masticable sabor tradicional. Bolsa por 100 unidades. Ideal para compartir y disfrutar en cualquier ocasión.
+                                </p>
+                              <?php endif; ?>
                               <form method="post" action="../../controller/CarritoController.php" style="display:inline;">
                                 <?php if (isset($_GET['debug'])): ?>
                                   <input type="hidden" name="debug" value="1">
