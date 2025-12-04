@@ -68,7 +68,7 @@ if ($id_producto !== null && $id_producto !== '') {
               </div>
               <h1 class="product-title"><?php echo $producto->nombre ?? 'Producto'; ?></h1>
               <div class="product-price-container mb-4">
-                <span class="current-price">$<?php echo $producto->precio ?? '0.00'; ?></span>
+                <span class="current-price">$<?php echo isset($producto->precio) ? intval($producto->precio) : '0'; ?></span>
               </div>
               <div class="product-short-description mb-4">
                 <p><?php echo $producto->descripcion ?? ''; ?></p>
@@ -96,17 +96,54 @@ if ($id_producto !== null && $id_producto !== '') {
                   </button>
                 </div>
               </div>
+              <script>
+                // Sincroniza el input hidden con el selector de cantidad
+                document.addEventListener('DOMContentLoaded', function() {
+                  var cantidadInput = document.getElementById('cantidad-input');
+                  var selector = document.querySelector('.quantity-input');
+                  if (cantidadInput && selector) {
+                    selector.addEventListener('change', function() {
+                      cantidadInput.value = selector.value;
+                    });
+                  }
+                });
+              </script>
               <!-- Action Buttons -->
               <div class="product-actions">
-                <button class="btn btn-primary add-to-cart-btn">
-                  <i class="bi bi-cart-plus"></i> Agregar al carrito
-                </button>
+                <form method="post" action="../../controller/CarritoController.php" class="d-inline">
+                  <input type="hidden" name="accion" value="agregar">
+                  <input type="hidden" name="id_producto" value="<?php echo $producto->id_producto; ?>">
+                  <input type="hidden" name="cantidad" id="cantidad-input" value="1">
+                  <button type="submit" class="btn btn-primary add-to-cart-btn" <?php echo ($producto->stock <= 0) ? 'disabled' : ''; ?>>
+                    <i class="bi bi-cart-plus"></i> Agregar al carrito
+                  </button>
+                </form>
                 <button class="btn btn-outline-primary buy-now-btn">
                   <i class="bi bi-lightning-fill"></i> Comprar ahora
                 </button>
-                <button class="btn btn-outline-secondary wishlist-btn">
-                  <i class="bi bi-heart"></i> 
-                </button>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  var buyNowBtn = document.querySelector('.buy-now-btn');
+                  if (buyNowBtn) {
+                    buyNowBtn.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      var id_producto = <?php echo json_encode($producto->id_producto); ?>;
+                      var cantidad = document.getElementById('cantidad-input') ? document.getElementById('cantidad-input').value : 1;
+                      var xhr = new XMLHttpRequest();
+                      xhr.open('POST', '../../controller/CarritoController.php', true);
+                      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                      xhr.onload = function() {
+                        if (xhr.status === 200) {
+                          window.location.href = 'checkout.php';
+                        } else {
+                          alert('Error al agregar el producto.');
+                        }
+                      };
+                      xhr.send('accion=agregar&id_producto=' + encodeURIComponent(id_producto) + '&cantidad=' + encodeURIComponent(cantidad));
+                    });
+                  }
+                });
+                </script>
               </div>
             </div>
           </div>

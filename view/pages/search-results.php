@@ -100,7 +100,7 @@ if ($search !== '') {
                     <div class="product-category"><?php echo htmlspecialchars($producto->categoria_nombre ?? $producto->id_categoria); ?></div>
                     <h4 class="product-title"><a href="product-details.php?id=<?php echo $producto->id_producto; ?>"><?php echo htmlspecialchars($producto->nombre); ?></a></h4>
                     <div class="product-meta">
-                      <div class="product-price">$<?php echo $producto->precio; ?></div>
+                      <div class="product-price">$<?php echo intval($producto->precio); ?></div>
                       <div class="product-rating">
                         <i class="bi bi-star-fill"></i>
                         4.8 <span>(42)</span>

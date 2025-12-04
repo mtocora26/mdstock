@@ -159,8 +159,10 @@
   /**
    * Ecommerce Cart Functionality
    * Handles quantity changes and item removal
+   * COMENTADO: La funcionalidad del carrito ahora se maneja con formularios PHP
    */
 
+  /*
   function ecommerceCartTools() {
     // Get all quantity buttons and inputs directly
     const decreaseButtons = document.querySelectorAll('.quantity-btn.decrease');
@@ -215,6 +217,7 @@
   }
 
   ecommerceCartTools();
+  */
 
   /**
    * Product Image Zoom and Thumbnail Functionality
@@ -681,7 +684,10 @@
           details.classList.add('d-none');
         });
 
-        document.getElementById(`${paymentId}-details`).classList.remove('d-none');
+        const detailsElement = document.getElementById(`${paymentId}-details`);
+        if (detailsElement) {
+          detailsElement.classList.remove('d-none');
+        }
       });
     });
 
@@ -715,44 +721,10 @@
           }
         });
 
-        // If form is valid, show success message
+        // If form is valid, submit the form
         if (isValid === true) {
-          // Hide form sections except the last one
-          const sections = document.querySelectorAll('.checkout-section');
-          sections.forEach((section, index) => {
-            if (index < sections.length - 1) {
-              section.style.display = 'none';
-            }
-          });
-
-          // Hide terms checkbox and place order button
-          const termsCheck = document.querySelector('.terms-check');
-          const placeOrderContainer = document.querySelector('.place-order-container');
-
-          if (termsCheck) termsCheck.style.display = 'none';
-          if (placeOrderContainer) placeOrderContainer.style.display = 'none';
-
-          // Show success message
-          const successMessage = document.querySelector('.success-message');
-          if (successMessage) {
-            successMessage.classList.remove('d-none');
-            successMessage.style.animation = 'fadeInUp 0.5s ease forwards';
-          }
-
-          // Scroll to success message
-          const orderReview = document.getElementById('order-review');
-          if (orderReview) {
-            orderReview.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-
-          // Simulate redirect after 3 seconds
-          setTimeout(() => {
-            // In a real application, this would redirect to an order confirmation page
-            console.log('Redirecting to order confirmation page...');
-          }, 3000);
+          // Submit the form to the server
+          checkoutForm.submit();
         }
       });
 
@@ -838,12 +810,12 @@
       });
     }
 
-    // ZIP code input mask (5 digits)
+    // ZIP code input mask (6 digits para Colombia)
     const zipInput = document.getElementById('zip');
     if (zipInput) {
       zipInput.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 5) value = value.slice(0, 5);
+        if (value.length > 6) value = value.slice(0, 6);
         e.target.value = value;
       });
     }

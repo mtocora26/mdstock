@@ -3,6 +3,46 @@ require_once __DIR__ . '/../conexion.php';
 require_once __DIR__ . '/../dto/UsuarioDTO.php';
 
 class UsuarioDAO {
+        // Actualizar datos del usuario
+        public function actualizarUsuario($usuarioDTO) {
+            $stmt = $this->pdo->prepare("UPDATE usuario SET Nombres = :nombres, Apellidos = :apellidos, correo = :correo, telefono = :telefono WHERE id_usuario = :id_usuario");
+            $stmt->bindParam(':nombres', $usuarioDTO->nombres);
+            $stmt->bindParam(':apellidos', $usuarioDTO->apellidos);
+            $stmt->bindParam(':correo', $usuarioDTO->correo);
+            $stmt->bindParam(':telefono', $usuarioDTO->telefono);
+            $stmt->bindParam(':id_usuario', $usuarioDTO->id_usuario);
+            $stmt->execute();
+            return true;
+        }
+
+        // Buscar usuario por ID
+        public function buscarPorId($id_usuario) {
+            $stmt = $this->pdo->prepare("SELECT * FROM usuario WHERE id_usuario = :id_usuario");
+            $stmt->bindParam(':id_usuario', $id_usuario);
+            $stmt->execute();
+            if ($row = $stmt->fetch()) {
+                $usuario = new UsuarioDTO();
+                $usuario->id_usuario = $row['id_usuario'];
+                $usuario->nombres = $row['Nombres'];
+                $usuario->apellidos = $row['Apellidos'];
+                $usuario->correo = $row['correo'];
+                $usuario->password = $row['password'];
+                $usuario->estado = $row['estado'];
+                $usuario->telefono = $row['telefono'];
+                $usuario->fecha_registro = $row['fecha_registro'];
+                return $usuario;
+            }
+            return null;
+        }
+
+        // Actualizar contraseña del usuario
+        public function actualizarContrasena($id_usuario, $passwordHash) {
+            $stmt = $this->pdo->prepare("UPDATE usuario SET password = :password WHERE id_usuario = :id_usuario");
+            $stmt->bindParam(':password', $passwordHash);
+            $stmt->bindParam(':id_usuario', $id_usuario);
+            $stmt->execute();
+            return true;
+        }
     private $pdo;
 
     public function __construct($pdo) {

@@ -2,6 +2,30 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
+
+// Calcular cantidad de productos en el carrito
+$cantidadCarrito = 0;
+if (isset($_SESSION['usuario']['id_usuario'])) {
+  // Usuario logueado: consultar desde la base de datos
+  require_once __DIR__ . '/../model/dao/CarritoDAO.php';
+  require_once __DIR__ . '/../model/conexion.php';
+
+  $conexion = new Conexion();
+  $pdo = $conexion->getConexion();
+  $carritoDAO = new CarritoDAO($pdo);
+
+  $carrito = $carritoDAO->obtenerCarritoPorUsuario($_SESSION['usuario']['id_usuario']);
+  if ($carrito) {
+    $cantidadCarrito = $carritoDAO->contarProductos($carrito['id_carrito']);
+  }
+} else {
+  // Usuario no logueado: contar desde la sesión
+  if (isset($_SESSION['carrito_detalles']) && is_array($_SESSION['carrito_detalles'])) {
+    foreach ($_SESSION['carrito_detalles'] as $item) {
+      $cantidadCarrito += $item->cantidad;
+    }
+  }
+}
 ?>
 <!-- Header (navbar, logo, menú, etc.) -->
 <!DOCTYPE html>
@@ -75,7 +99,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 }
               </script>
               <div class="swiper-wrapper">
-                <div class="swiper-slide">🚚 envío gratis después de $50.000</div>
+                <div class="swiper-slide">🚚 Envío gratis después de $50.000</div>
                 <div class="swiper-slide">💰 Garantía de devolución de dinero de 30 días.</div>
                 <div class="swiper-slide">🎁 20% de descuento en tu primer pedido</div>
               </div>
@@ -92,8 +116,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
           <!-- Logo -->
           <a href="index.php" class="logo d-flex align-items-center">
-          <!--  <img src="../../assets/img/logo-mdstock.png" alt="MDSTOCK Logo" width="500" height="500">-->
-            <h1 class="sitename">MDSTOCK</h1>
+          <img src="../../assets/img/logo-mdstock.png" alt="MDSTOCK Logo" class="logo-img">
+      
           </a>
 
           <!-- Search -->
@@ -120,57 +144,62 @@ if (session_status() === PHP_SESSION_NONE) {
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
-                  <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
-                </div>
-                <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="account.php">
-                    <i class="bi bi-person-circle me-2"></i>
-                    <span>Mi perfil</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.php">
-                    <i class="bi bi-bag-check me-2"></i>
-                    <span>Mis ordenes</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.php">
-                    <i class="bi bi-heart me-2"></i>
-                    <span>Mi lista de deseos</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="account.php">
-                    <i class="bi bi-gear me-2"></i>
-                    <span>Configuración</span>
-                  </a>
-                </div>
-                <div class="dropdown-footer">
-                  <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
-                  <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
-                </div>
+                <?php if (!isset($_SESSION['usuario'])) { ?>
+                  <div class="dropdown-header">
+                    <h6>Bienvenido a <span class="sitename">MDSTOCK</span></h6>
+                    <p class="mb-0">Accede a tu cuenta  &amp;  gestiona tus pedidos</p>
+                  </div>
+                  <div class="dropdown-body">
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
+                      <i class="bi bi-person-circle me-2"></i>
+                      <span>Mi perfil</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
+                      <i class="bi bi-bag-check me-2"></i>
+                      <span>Mis ordenes</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
+                      <i class="bi bi-gear me-2"></i>
+                      <span>Configuración</span>
+                    </a>
+                  </div>
+                  <div class="dropdown-footer">
+                    <a href="login-register.php" class="btn btn-primary w-100 mb-2">Iniciar sesión</a>
+                    <a href="login-register.php" class="btn btn-outline-primary w-100">Registrarse</a>
+                  </div>
+                <?php } ?>
                 <?php if (isset($_SESSION['usuario'])) { ?>
                   <div class="dropdown-header">
                     <h6>Hola, <?php echo htmlspecialchars($_SESSION['usuario']['nombres']); ?></h6>
                     <p class="mb-0">Accede a tu cuenta &amp; gestiona tus pedidos</p>
                   </div>
                   <div class="dropdown-body">
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
                       <i class="bi bi-person-circle me-2"></i>
                       <span>Mi perfil</span>
                     </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
                       <i class="bi bi-bag-check me-2"></i>
                       <span>Mis ordenes</span>
                     </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
-                      <i class="bi bi-heart me-2"></i>
-                      <span>Mi lista de deseos</span>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <a class="dropdown-item d-flex align-items-center" href="account.php">
                       <i class="bi bi-gear me-2"></i>
                       <span>Configuración</span>
                     </a>
+                    <?php
+                    require_once __DIR__ . '/../model/helpers/RoleHelper.php';
+                    require_once __DIR__ . '/../model/conexion.php';
+                    $pdo = isset($pdo) ? $pdo : (new Conexion())->getConexion();
+                    if (isset($_SESSION['usuario']['id_usuario']) && RoleHelper::esAdmin($_SESSION['usuario']['id_usuario'], $pdo)) {
+                    ?>
+                    <a class="dropdown-item d-flex align-items-center" href="../admin/productos.php">
+                      <i class="bi bi-speedometer2 me-2"></i>
+                      <span>Dashboard Admin</span>
+                    </a>
+                    <?php } ?>
                   </div>
                   <div class="dropdown-footer">
-                    <form action="../controller/LogoutController.php" method="post">
+                    <form action="/controller/LogoutController.php" method="post">
                       <button type="submit" class="btn btn-danger w-100">Cerrar sesión</button>
                     </form>
                   </div>
@@ -180,7 +209,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Cart -->
             <a href="cart.php" class="header-action-btn">
               <i class="bi bi-cart3"></i>
-              <span class="badge">3</span>
+              <?php if ($cantidadCarrito > 0): ?>
+              <span class="badge" id="cart-badge"><?php echo $cantidadCarrito; ?></span>
+              <?php endif; ?>
             </a>
 
             <!-- Mobile Navigation Toggle -->
@@ -200,7 +231,6 @@ if (session_status() === PHP_SESSION_NONE) {
               <li><a href="index.php" class="active">Inicio</a></li>
               <li><a href="category.php">Categorias</a></li>
               <li><a href="about.php">Sobre nosotros</a></li>
-              <li><a href="checkout.php">Pagar</a></li>
               <li><a href="contact.php">Contactanos</a></li>
             </ul>
           </nav>

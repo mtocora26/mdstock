@@ -77,9 +77,14 @@ $productos_pagina = array_slice($productos, $inicio, $productos_por_pagina);
                     <div class="product-thumb position-relative">
                       <img src="<?php echo $producto->imagen; ?>" alt="Product Image" class="main-img" loading="lazy">
                       <div class="product-thumb-overlay">
-                        <button type="button" class="add-to-cart-btn w-100<?php echo ($producto->stock <= 0) ? ' disabled' : ''; ?>">
-                          <?php echo ($producto->stock <= 0) ? 'Sin stock' : 'Agregar al carrito'; ?>
-                        </button>
+                        <form method="post" action="../../controller/CarritoController.php">
+                          <input type="hidden" name="accion" value="agregar">
+                          <input type="hidden" name="id_producto" value="<?php echo $producto->id_producto; ?>">
+                          <input type="hidden" name="cantidad" value="1">
+                          <button type="submit" class="add-to-cart-btn w-100<?php echo ($producto->stock <= 0) ? ' disabled' : ''; ?>">
+                            <?php echo ($producto->stock <= 0) ? 'Sin stock' : 'Agregar al carrito'; ?>
+                          </button>
+                        </form>
                       </div>
                     </div>
                     <div class="product-content">
@@ -90,7 +95,7 @@ $productos_pagina = array_slice($productos, $inicio, $productos_por_pagina);
                           </a>
                         </h3>
                         <div class="product-price">
-                          <span>$<?php echo $producto->precio; ?></span>
+                          <span>$<?php echo intval($producto->precio); ?></span>
                         </div>
                         <div class="product-description">
                           <small><?php echo $producto->descripcion; ?></small>

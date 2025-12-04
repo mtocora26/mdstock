@@ -11,8 +11,8 @@
               <h1>Descubre productos de <span>calidad</span> para tus negocios</h1>
               <p>Productos de despensa, dulcería, snacks y bebidas con disponibilidad rápida y precios competitivos.</p>
               <div class="hero-cta">
-                <a href="#" class="btn btn-shop">Comprar ahora<i class="bi bi-arrow-right"></i></a>
-                <a href="#" class="btn btn-collection">Ver productos</a>
+                <a href="category.php" class="btn btn-shop">Comprar ahora<i class="bi bi-arrow-right"></i></a>
+                <a href="category.php" class="btn btn-collection">Ver productos</a>
               </div>
               <div class="hero-features">
                 <div class="feature-item">
@@ -73,8 +73,6 @@
               <p>Ofrecemos envío gratuito en pedidos superiores a [monto mínimo], dentro de nuestra zona de cobertura.</p>
             </div>
           </div><!-- End Info Card 1 -->
-
-          <!-- Info Card 2 -->
           <div class="col-12 col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
             <div class="info-card text-center">
               <div class="icon-box">
@@ -167,7 +165,7 @@
                 </div>
                 <h3 class="category-title">Categoria de Bebidas</h3>
                 <p class="category-count">en stock</p>
-                <a href="category.php" class="stretched-link"></a>
+                <a href="category.php?categoria=1" class="stretched-link"></a>
               </div>
             </div>
 
@@ -179,7 +177,7 @@
                 </div>
                 <h3 class="category-title">Categoria Dulcería</h3>
                 <p class="category-count">en stock</p>
-                <a href="category.php" class="stretched-link"></a>
+                  <a href="category.php?categoria=3" class="stretched-link"></a>
               </div>
             </div>
 
@@ -191,7 +189,7 @@
                 </div>
                 <h3 class="category-title">Categoria Snacks</h3>
                 <p class="category-count">en stock</p>
-                <a href="category.php" class="stretched-link"></a>
+                <a href="category.php?categoria=2" class="stretched-link"></a>
               </div>
             </div>
         </div>

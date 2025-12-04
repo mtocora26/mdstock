@@ -90,11 +90,34 @@
   <script src="/assets/vendor/drift-zoom/Drift.min.js"></script>
   <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
+
   <!-- Main JS File -->
   <script src="/assets/js/main.js"></script>
 
   <!-- Login JS for password eye -->
   <script src="/assets/js/login.js"></script>
+
+  <!-- Carrito JS for cart counter -->
+  <script src="/assets/js/carrito.js"></script>
+
+  <!-- Fix para forzar apertura de menú de cuenta si Bootstrap falla -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var accountBtn = document.querySelector('.account-dropdown .header-action-btn');
+      var dropdownMenu = document.querySelector('.account-dropdown .dropdown-menu');
+      if (accountBtn && dropdownMenu) {
+        accountBtn.addEventListener('click', function(e) {
+          // Si Bootstrap no lo abre, lo abrimos manualmente
+          setTimeout(function() {
+            if (!dropdownMenu.classList.contains('show')) {
+              dropdownMenu.classList.add('show');
+              dropdownMenu.style.display = 'block';
+            }
+          }, 100);
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>

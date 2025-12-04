@@ -1,6 +1,67 @@
-<?php require_once '../header.php'; ?>
+
+<?php
+// Mostrar todos los errores y warnings en pantalla para depuración
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+// Verificar si hay usuario logueado ANTES de incluir el header
+if (!isset($_SESSION['usuario']['id_usuario'])) {
+  echo '<div style="color:red;">No hay sesión de usuario activa</div>';
+  header('Location: login-register.php');
+  exit;
+}
+
+require_once '../header.php';
+require_once __DIR__ . '/../../model/conexion.php';
+require_once __DIR__ . '/../../model/dao/PedidoDAO.php';
+
+$id_usuario = $_SESSION['usuario']['id_usuario'];
+
+// Obtener pedidos del usuario
+$pdo = Conexion::getConexion();
+$pedidoDAO = new PedidoDAO($pdo);
+
+$pedidos = $pedidoDAO->obtenerPedidosPorUsuario($id_usuario, 10, 0);
+$totalPedidos = $pedidoDAO->contarPedidosPorUsuario($id_usuario);
+
+// Si la variable $pedidos no es array, mostrar error visible
+if (!is_array($pedidos)) {
+  echo '<div style="background:#ffe0e0; color:#a00; padding:20px; margin:20px 0; text-align:center; font-size:1.2em;">Error al obtener los pedidos. Por favor recarga la página o contacta soporte.</div>';
+  $pedidos = [];
+}
+
+// Si no hay pedidos, mostrar mensaje visible
+
+
+// Función helper para formato de estado
+function getEstadoClass($estado) {
+  $estados = [
+    'pendiente' => 'processing',
+    'pendiente_pago' => 'processing',
+    'enviado' => 'shipped',
+    'entregado' => 'delivered',
+    'cancelado' => 'cancelled'
+  ];
+  return $estados[$estado] ?? 'processing';
+}
+
+function getEstadoTexto($estado) {
+  $textos = [
+    'pendiente' => 'Pendiente',
+    'pendiente_pago' => 'Pendiente de Pago',
+    'enviado' => 'Enviado',
+    'entregado' => 'Entregado',
+    'cancelado' => 'Cancelado'
+  ];
+  return $textos[$estado] ?? $estado;
+}
+?>
 
 <main class="main">
+
 
     <!-- Page Title -->
     <div class="page-title light-background">
@@ -10,9 +71,9 @@
     </div><!-- End Page Title -->
 
     <!-- Account Section -->
-    <section id="account" class="account section">
+    <section id="account" class="account section" style="display:block !important;">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="container" data-aos="fade-up" data-aos-delay="100" style="display:block !important;">
 
         <!-- Mobile Menu Toggle -->
         <div class="mobile-menu d-lg-none mb-4">
@@ -22,20 +83,26 @@
           </button>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4" style="display:flex !important;">
           <!-- Profile Menu -->
-          <div class="col-lg-3">
-            <div class="profile-menu collapse d-lg-block" id="profileMenu">
+          <div class="col-lg-3" style="display:block !important;">
+            <div class="profile-menu collapse d-lg-block" id="profileMenu" style="display:block !important;">
               <!-- User Info -->
               <div class="user-info" data-aos="fade-right">
-                <div class="user-avatar">
-                  <img src="assets/img/person/person-f-1.webp" alt="Profile" loading="lazy">
-                  <span class="status-badge"><i class="bi bi-shield-check"></i></span>
-                </div>
-                <h4>Sarah Anderson</h4>
+                <h4><?php echo htmlspecialchars((isset($_SESSION['usuario']['nombres']) ? $_SESSION['usuario']['nombres'] : '') . ' ' . (isset($_SESSION['usuario']['apellidos']) ? $_SESSION['usuario']['apellidos'] : '')); ?></h4>
                 <div class="user-status">
-                  <i class="bi bi-award"></i>
-                  <span>Miembro Premium</span>
+                  <i class="bi bi-envelope"></i>
+                  <span>
+                    <?php
+                      if (!empty($_SESSION['usuario']['email'])) {
+                        echo htmlspecialchars($_SESSION['usuario']['email']);
+                      } elseif (!empty($_SESSION['usuario']['correo'])) {
+                        echo htmlspecialchars($_SESSION['usuario']['correo']);
+                      } else {
+                        echo '<span class="text-muted">Sin correo</span>';
+                      }
+                    ?>
+                  </span>
                 </div>
               </div>
 
@@ -46,26 +113,9 @@
                     <a class="nav-link active" data-bs-toggle="tab" href="#orders">
                       <i class="bi bi-box-seam"></i>
                       <span>Mis Pedidos</span>
-                      <span class="badge">3</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#wishlist">
-                      <i class="bi bi-heart"></i>
-                      <span>Lista de deseos</span>
-                      <span class="badge">12</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#wallet">
-                      <i class="bi bi-wallet2"></i>
-                      <span>Métodos de pago</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">
-                      <i class="bi bi-star"></i>
-                      <span>Mis reseñas</span>
+                      <?php if ($totalPedidos > 0): ?>
+                        <span class="badge"><?php echo $totalPedidos; ?></span>
+                      <?php endif; ?>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -83,11 +133,7 @@
                 </ul>
 
                 <div class="menu-footer">
-                  <a href="#" class="help-link">
-                    <i class="bi bi-question-circle"></i>
-                    <span>Centro de Ayuda</span>
-                  </a>
-                  <a href="#" class="logout-link">
+                  <a href="../../controller/LogoutController.php" class="logout-link">
                     <i class="bi bi-box-arrow-right"></i>
                     <span>Cerrar Sesión</span>
                   </a>
@@ -97,785 +143,168 @@
           </div>
 
           <!-- Content Area -->
-          <div class="col-lg-9">
-            <div class="content-area">
-              <div class="tab-content">
-                <!-- Orders Tab -->
+          <div class="col-lg-9" style="display:block !important;">
+            <div class="content-area" style="display:block !important;">
+              <div class="tab-content" style="display:block !important;">
+                                <!-- Orders Tab -->
                 <div class="tab-pane fade show active" id="orders">
                   <div class="section-header" data-aos="fade-up">
                     <h2>Mis Pedidos</h2>
-                    <div class="header-actions">
-                      <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Buscar pedidos...">
-                      </div>
-                      <div class="dropdown">
-                        <button class="filter-btn" data-bs-toggle="dropdown">
-                          <i class="bi bi-funnel"></i>
-                          <span>Filtrar</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Todos los pedidos</a></li>
-                          <li><a class="dropdown-item" href="#">En proceso</a></li>
-                          <li><a class="dropdown-item" href="#">Enviado</a></li>
-                          <li><a class="dropdown-item" href="#">Entregado</a></li>
-                          <li><a class="dropdown-item" href="#">Cancelado</a></li>
-                        </ul>
-                      </div>
-                    </div>
                   </div>
+
+                  <?php if (empty($pedidos)): ?>
+                    <div class="empty-state always-visible" data-aos="fade-up" style="display:block !important; opacity:1 !important;">
+                      <i class="bi bi-inbox" style="font-size: 64px; color: #ccc;"></i>
+                      <h3>No tienes pedidos todavía</h3>
+                      <p>Cuando realices tu primera compra, aparecerá aquí.</p>
+                      <a href="category.php" class="btn btn-primary">Ir a Comprar</a>
+                    </div>
+                  <?php else: ?>
 
                   <div class="orders-grid">
-                    <!-- Order Card 1 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="100">
+                    <?php foreach ($pedidos as $index => $pedido):
+                      $detalles = $pedidoDAO->obtenerPedidoConDetalles($pedido['id_pedido']);
+                    ?>
+                    <!-- Order Card -->
+                    <div class="order-card" data-aos="fade-up" data-aos-delay="<?php echo ($index * 100); ?>">
                       <div class="order-header">
                         <div class="order-id">
-                          <span class="label">Order ID:</span>
-                          <span class="value">#ORD-2024-1278</span>
+                          <span class="label">Pedido #</span>
+                          <span class="value"><?php echo str_pad($pedido['id_pedido'], 8, '0', STR_PAD_LEFT); ?></span>
                         </div>
-                        <div class="order-date">Feb 20, 2025</div>
+                        <div class="order-date"><?php echo date('d M, Y', strtotime($pedido['fecha'])); ?></div>
                       </div>
                       <div class="order-content">
                         <div class="product-grid">
-                          <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
+                          <?php
+                          $maxImages = 3;
+                          $imageCount = 0;
+                          if (!empty($detalles['detalles'])):
+                            foreach ($detalles['detalles'] as $item):
+                              if ($imageCount >= $maxImages) break;
+                              $imagen = $item['imagen'] ?? 'assets/img/product/default.webp';
+                          ?>
+                            <img src="../../<?php echo htmlspecialchars($imagen); ?>" alt="Product" loading="lazy" onerror="this.src='../../assets/img/product/default.webp'">
+                          <?php
+                              $imageCount++;
+                            endforeach;
+                            if (count($detalles['detalles']) > $maxImages):
+                          ?>
+                            <span class="more-items">+<?php echo (count($detalles['detalles']) - $maxImages); ?></span>
+                          <?php endif; endif; ?>
                         </div>
                         <div class="order-info">
                           <div class="info-row">
                             <span>Estado</span>
-                            <span class="status processing">En proceso</span>
+                            <span class="status <?php echo getEstadoClass($pedido['estado']); ?>">
+                              <?php echo getEstadoTexto($pedido['estado']); ?>
+                            </span>
                           </div>
                           <div class="info-row">
                             <span>Artículos</span>
-                            <span>3 artículos</span>
+                            <span><?php echo $pedido['total_items']; ?> artículo<?php echo $pedido['total_items'] != 1 ? 's' : ''; ?></span>
                           </div>
                           <div class="info-row">
                             <span>Total</span>
-                            <span class="price">$789.99</span>
+                            <span class="price">$<?php echo intval($pedido['total']); ?></span>
                           </div>
                         </div>
                       </div>
                       <div class="order-footer">
-                        <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking1" aria-expanded="false">Rastrear Pedido</button>
-                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details1" aria-expanded="false">Ver Detalles</button>
-                      </div>
-
-                      <!-- Order Tracking -->
-                      <div class="collapse tracking-info" id="tracking1">
-                        <div class="tracking-timeline">
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Pedido Confirmado</h5>
-                              <p>Tu pedido ha sido recibido y confirmado</p>
-                              <span class="timeline-date">Feb 20, 2025 - 10:30 AM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>En proceso</h5>
-                              <p>Tu pedido está siendo preparado para el envío</p>
-                              <span class="timeline-date">Feb 20, 2025 - 2:45 PM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item active">
-                            <div class="timeline-icon">
-                              <i class="bi bi-box-seam"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Empaquetando</h5>
-                              <p>Sus artículos están siendo empaquetados para el envío</p>
-                              <span class="timeline-date">Feb 20, 2025 - 4:15 PM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>En tránsito</h5>
-                              <p>Se espera que se envíe dentro de 24 horas</p>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-house-door"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Entrega</h5>
-                              <p>Entrega estimada: 22 de febrero de 2025</p>
-                            </div>
-                          </div>
-                        </div>
+                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details<?php echo $pedido['id_pedido']; ?>" aria-expanded="false">Ver Detalles</button>
                       </div>
 
                       <!-- Order Details -->
-                      <div class="collapse order-details" id="details1">
+                      <div class="collapse order-details" id="details<?php echo $pedido['id_pedido']; ?>">
                         <div class="details-content">
                           <div class="detail-section">
                             <h5>Información del Pedido</h5>
                             <div class="info-grid">
                               <div class="info-item">
                                 <span class="label">Método de Pago</span>
-                                <span class="value">Tarjeta de Crédito (**** 4589)</span>
+                                <span class="value">
+                                  <?php
+                                  echo $pedido['metodo_pago'] === 'cod' ? 'Pago Contra Entrega' : 'Transferencia Bancaria';
+                                  ?>
+                                </span>
                               </div>
                               <div class="info-item">
-                                <span class="label">Método de Envío</span>
-                                <span class="value">Entrega Exprés (2-3 días)</span>
+                                <span class="label">Fecha</span>
+                                <span class="value"><?php echo date('d/m/Y H:i', strtotime($pedido['fecha'])); ?></span>
                               </div>
                             </div>
                           </div>
 
+                          <?php if (!empty($detalles['detalles'])): ?>
                           <div class="detail-section">
-                            <h5>Artículos (3)</h5>
+                            <h5>Artículos (<?php echo count($detalles['detalles']); ?>)</h5>
                             <div class="order-items">
+                              <?php foreach ($detalles['detalles'] as $item): ?>
                               <div class="item">
-                                <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                                <img src="../../<?php echo htmlspecialchars($item['imagen'] ?? 'assets/img/product/default.webp'); ?>" alt="Product" loading="lazy" onerror="this.src='../../assets/img/product/default.webp'">
                                 <div class="item-info">
-                                  <h6>Lorem ipsum dolor sit amet</h6>
+                                  <h6><?php echo htmlspecialchars($item['nombre'] ?? 'Producto'); ?></h6>
                                   <div class="item-meta">
-                                    <span class="sku">ID: PRD-001</span>
-                                    <span class="qty">Cantidad: 1</span>
+                                    <span class="sku">ID: <?php echo $item['id_producto']; ?></span>
+                                    <span class="qty">Cantidad: <?php echo $item['cantidad']; ?></span>
                                   </div>
                                 </div>
-                                <div class="item-price">$899.99</div>
+                                <div class="item-price">$<?php echo intval($item['precio'] * $item['cantidad']); ?></div>
                               </div>
-                              <div class="item">
-                                <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Consectetur adipiscing elit</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">ID: PRD-002</span>
-                                    <span class="qty">Cantidad: 2</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$599.95</div>
-                              </div>
-
-                              <div class="item">
-                                <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Sed do eiusmod tempor</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">ID: PRD-003</span>
-                                    <span class="qty">Cantidad: 1</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$129.99</div>
-                              </div>
+                              <?php endforeach; ?>
                             </div>
                           </div>
+                          <?php endif; ?>
 
                           <div class="detail-section">
                             <h5>Detalles de Precio</h5>
                             <div class="price-breakdown">
-                              <div class="price-row">
-                                <span>Subtotal</span>
-                                <span>$1,929.93</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Envío</span>
-                                <span>$15.99</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Impuesto</span>
-                                <span>$159.98</span>
-                              </div>
                               <div class="price-row total">
                                 <span>Total</span>
-                                <span>$2,105.90</span>
+                                <span>$<?php echo intval($pedido['total']); ?></span>
                               </div>
                             </div>
                           </div>
 
+                          <?php if (!empty($pedido['direccion_envio']) || !empty($pedido['nombre_cliente'])): ?>
                           <div class="detail-section">
-                            <h5>Dirección de Envío</h5>
+                            <h5>Información de Envío</h5>
                             <div class="address-info">
-                              <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                              <p class="contact">+1 (555) 123-4567</p>
+                              <p>
+                                <?php if (!empty($pedido['nombre_cliente'])): ?>
+                                  <strong><?php echo htmlspecialchars($pedido['nombre_cliente']); ?></strong><br>
+                                <?php endif; ?>
+                                <?php if (!empty($pedido['direccion_envio'])): ?>
+                                  <?php echo nl2br(htmlspecialchars($pedido['direccion_envio'])); ?><br>
+                                <?php endif; ?>
+                              </p>
+                              <?php if (!empty($pedido['telefono_cliente'])): ?>
+                                <p class="contact"><?php echo htmlspecialchars($pedido['telefono_cliente']); ?></p>
+                              <?php endif; ?>
                             </div>
                           </div>
+                          <?php endif; ?>
                         </div>
                       </div>
                     </div>
-
-                    <!-- Order Card 2 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">ID de Pedido:</span>
-                          <span class="value">#ORD-2024-1265</span>
-                        </div>
-                        <div class="order-date">15 de Febrero, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-4.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-5.webp" alt="Product" loading="lazy">
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Estado</span>
-                            <span class="status shipped">Enviado</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Artículos</span>
-                            <span>2 artículos</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$459.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking2" aria-expanded="false">Rastrear Pedido</button>
-                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details2" aria-expanded="false">Ver Detalles</button>
-                      </div>
-
-                      <!-- Order Tracking -->
-                      <div class="collapse tracking-info" id="tracking2">
-                        <div class="tracking-timeline">
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Pedido Confirmado</h5>
-                              <p>Su pedido ha sido recibido y confirmado</p>
-                              <span class="timeline-date">15 de Febrero, 2025 - 9:15 AM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Procesando</h5>
-                              <p>Su pedido está siendo preparado para el envío</p>
-                              <span class="timeline-date">15 de Febrero, 2025 - 11:30 AM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Empaquetado</h5>
-                              <p>Sus artículos han sido empaquetados para el envío</p>
-                              <span class="timeline-date">15 de Febrero, 2025 - 2:45 PM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item active">
-                            <div class="timeline-icon">
-                              <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>En Tránsito</h5>
-                              <p>Paquete en tránsito con el transportista</p>
-                              <span class="timeline-date">16 de Febrero, 2025 - 10:20 AM</span>
-                              <div class="shipping-info">
-                                <span>Número de seguimiento: </span>
-                                <span class="tracking-number">1Z999AA1234567890</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-house-door"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Entrega</h5>
-                              <p>Entrega estimada: 18 de Febrero, 2025</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Order Details -->
-                      <div class="collapse order-details" id="details2">
-                        <div class="details-content">
-                          <div class="detail-section">
-                            <h5>Información del Pedido</h5>
-                            <div class="info-grid">
-                              <div class="info-item">
-                                <span class="label">Método de Pago</span>
-                                <span class="value">Tarjeta de Crédito (**** 7821)</span>
-                              </div>
-                              <div class="info-item">
-                                <span class="label">Método de Envío</span>
-                                <span class="value">Envío Estándar (3-5 días)</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Artículos (2)</h5>
-                            <div class="order-items">
-                              <div class="item">
-                                <img src="assets/img/product/product-4.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Ut enim ad minim veniam</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-004</span>
-                                    <span class="qty">Cantidad: 1</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$299.99</div>
-                              </div>
-
-                              <div class="item">
-                                <img src="assets/img/product/product-5.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Quis nostrud exercitation</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-005</span>
-                                    <span class="qty">Cantidad: 1</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$159.99</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Detalles de Precio</h5>
-                            <div class="price-breakdown">
-                              <div class="price-row">
-                                <span>Subtotal</span>
-                                <span>$459.98</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Envío</span>
-                                <span>$9.99</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Impuesto</span>
-                                <span>$38.02</span>
-                              </div>
-                              <div class="price-row total">
-                                <span>Total</span>
-                                <span>$459.99</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Dirección de Envío</h5>
-                            <div class="address-info">
-                              <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                              <p class="contact">+1 (555) 123-4567</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Order Card 3 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="300">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">ID de Pedido:</span>
-                          <span class="value">#ORD-2024-1252</span>
-                        </div>
-                        <div class="order-date">10 de Febrero, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-6.webp" alt="Product" loading="lazy">
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Estado</span>
-                            <span class="status delivered">Entregado</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Artículos</span>
-                            <span>1 artículo</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$129.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-review">Escribir Reseña</button>
-                        <button type="button" class="btn-details">Ver Detalles</button>
-                      </div>
-                    </div>
-
-                    <!-- Order Card 4 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="400">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">ID de Pedido:</span>
-                          <span class="value">#ORD-2024-1245</span>
-                        </div>
-                        <div class="order-date">5 de Febrero, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-7.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-8.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-9.webp" alt="Product" loading="lazy">
-                          <span class="more-items">+2</span>
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Estado</span>
-                            <span class="status cancelled">Cancelado</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Artículos</span>
-                            <span>5 artículos</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$1,299.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-reorder">Reordenar</button>
-                        <button type="button" class="btn-details">Ver Detalles</button>
-                      </div>
-                    </div>
+                    <?php endforeach; ?>
                   </div>
 
-                  <!-- Pagination -->
-                  <div class="pagination-wrapper" data-aos="fade-up">
-                    <button type="button" class="btn-prev" disabled="">
-                      <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <div class="page-numbers">
-                      <button type="button" class="active">1</button>
-                      <button type="button">2</button>
-                      <button type="button">3</button>
-                      <span>...</span>
-                      <button type="button">12</button>
-                    </div>
-                    <button type="button" class="btn-next">
-                      <i class="bi bi-chevron-right"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Wishlist Tab -->
-                <div class="tab-pane fade" id="wishlist">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>Mi Lista de Deseos</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-all">Agregar Todo al Carrito</button>
-                    </div>
-                  </div>
-
-                  <div class="wishlist-grid">
-                    <!-- Wishlist Item 1 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="sale-badge">-20%</div>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span>(4.5)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$79.99</span>
-                            <span class="original">$99.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-add-cart">Agregar al Carrito</button>
-                      </div>
-                    </div>
-
-                    <!-- Wishlist Item 2 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Consectetur adipiscing elit</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$149.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-add-cart">Agregar al Carrito</button>
-                      </div>
-                    </div>
-
-                    <!-- Wishlist Item 3 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="300">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="out-of-stock-badge">Agotado</div>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Sed do eiusmod tempor</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$199.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-notify">Notificar Cuando Esté Disponible</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Payment Methods Tab -->
-                <div class="tab-pane fade" id="wallet">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>Métodos de Pago</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-new">
-                        <i class="bi bi-plus-lg"></i>
-                        Agregar Nueva Tarjeta
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="payment-cards-grid">
-                    <!-- Payment Card 1 -->
-                    <div class="payment-card default" data-aos="fade-up" data-aos-delay="100">
-                      <div class="card-header">
-                        <i class="bi bi-credit-card"></i>
-                        <div class="card-badges">
-                          <span class="default-badge">Predeterminado</span>
-                          <span class="card-type">Visa</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="card-number">•••• •••• •••• 4589</div>
-                        <div class="card-info">
-                          <span>Expires 09/2026</span>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Editar
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Eliminar
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Payment Card 2 -->
-                    <div class="payment-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="card-header">
-                        <i class="bi bi-credit-card"></i>
-                        <div class="card-badges">
-                          <span class="card-type">Mastercard</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="card-number">•••• •••• •••• 7821</div>
-                        <div class="card-info">
-                          <span>Expira 05/2025</span>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Editar
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Eliminar
-                        </button>
-                        <button type="button" class="btn-make-default">Establecer como Predeterminado</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Reviews Tab -->
-                <div class="tab-pane fade" id="reviews">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>Mis Reseñas</h2>
-                    <div class="header-actions">
-                      <div class="dropdown">
-                        <button class="filter-btn" data-bs-toggle="dropdown">
-                          <i class="bi bi-funnel"></i>
-                          <span>Ordenar por: Recientes</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Recientes</a></li>
-                          <li><a class="dropdown-item" href="#">Calificación Más Alta</a></li>
-                          <li><a class="dropdown-item" href="#">Calificación Más Baja</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="reviews-grid">
-                    <!-- Review Card 1 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="review-header">
-                        <img src="assets/img/product/product-1.webp" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Lorem ipsum dolor sit amet</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
-                          </div>
-                          <div class="review-date">Reseñado el 15 de Febrero de 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
-
-                    <!-- Review Card 2 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="review-header">
-                        <img src="assets/img/product/product-2.webp" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Consectetur adipiscing elit</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
-                          </div>
-                          <div class="review-date">Reseñado el 10 de Febrero de 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
-                  </div>
+                  <?php endif; ?>
                 </div>
 
                 <!-- Addresses Tab -->
                 <div class="tab-pane fade" id="addresses">
                   <div class="section-header" data-aos="fade-up">
                     <h2>Mis Direcciones</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-new">
-                        <i class="bi bi-plus-lg"></i>
-                        Agregar Nueva Dirección
-                      </button>
-                    </div>
                   </div>
 
-                  <div class="addresses-grid">
-                    <!-- Address Card 1 -->
-                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
-                      <div class="card-header">
-                        <h4>Casa</h4>
-                        <span class="default-badge">Predeterminado</span>
-                      </div>
-                      <div class="card-body">
-                        <p class="address-text">123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                        <div class="contact-info">
-                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                          <div><i class="bi bi-telephone"></i> +1 (555) 123-4567</div>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Editar
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Eliminar
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Address Card 2 -->
-                    <div class="address-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="card-header">
-                        <h4>Oficina</h4>
-                      </div>
-                      <div class="card-body">
-                        <p class="address-text">456 Business Ave<br>Suite 200<br>San Francisco, CA 94107<br>United States</p>
-                        <div class="contact-info">
-                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                          <div><i class="bi bi-telephone"></i> +1 (555) 987-6543</div>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Editar
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Eliminar
-                        </button>
-                        <button type="button" class="btn-make-default">Establecer como Predeterminado</button>
-                      </div>
-                    </div>
+                  <div class="empty-state" data-aos="fade-up">
+                    <i class="bi bi-geo-alt" style="font-size: 64px; color: #ccc;"></i>
+                    <h3>Direcciones de Envío</h3>
+                    <p>Las direcciones se ingresan directamente durante el checkout.</p>
+                    <p class="text-muted">Puedes ver las direcciones utilizadas en la información de cada pedido.</p>
+                    <a href="category.php" class="btn btn-primary">Ir a Comprar</a>
                   </div>
                 </div>
 
@@ -889,28 +318,28 @@
                     <!-- Personal Information -->
                     <div class="settings-section" data-aos="fade-up">
                       <h3>Información Personal</h3>
-                      <form class="php-email-form settings-form">
+                      <form class="php-email-form settings-form" method="post" action="../../controller/UsuarioController.php">
                         <div class="row g-3">
                           <div class="col-md-6">
                             <label for="firstName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="firstName" value="Sarah" required="">
+                            <input type="text" class="form-control" id="firstName" name="nombres" value="<?php echo htmlspecialchars($_SESSION['usuario']['nombres']); ?>" required>
                           </div>
                           <div class="col-md-6">
                             <label for="lastName" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" id="lastName" value="Anderson" required="">
+                            <input type="text" class="form-control" id="lastName" name="apellidos" value="<?php echo htmlspecialchars($_SESSION['usuario']['apellidos']); ?>" required>
                           </div>
                           <div class="col-md-6">
                             <label for="email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="email" value="sarah@example.com" required="">
+                            <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($_SESSION['usuario']['email']) ? htmlspecialchars($_SESSION['usuario']['email']) : ''; ?>" required>
                           </div>
                           <div class="col-md-6">
                             <label for="phone" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+                            <input type="tel" class="form-control" id="phone" name="telefono" value="<?php echo isset($_SESSION['usuario']['telefono']) ? htmlspecialchars($_SESSION['usuario']['telefono']) : ''; ?>">
                           </div>
                         </div>
 
                         <div class="form-buttons">
-                          <button type="submit" class="btn-save">Guardar Cambios</button>
+                          <button type="submit" class="btn-save" name="actualizar_usuario">Guardar Cambios</button>
                         </div>
 
                         <div class="loading">Cargando</div>
@@ -958,22 +387,23 @@
                     <!-- Security Settings -->
                     <div class="settings-section" data-aos="fade-up" data-aos-delay="200">
                       <h3>Seguridad</h3>
-                      <form class="php-email-form settings-form">
+                      <form class="php-email-form settings-form" method="post" action="../../controller/UsuarioController.php">
                         <div class="row g-3">
                           <div class="col-md-12">
                             <label for="currentPassword" class="form-label">Contraseña Actual</label>
-                            <input type="password" class="form-control" id="currentPassword" required="">
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                           </div>
                           <div class="col-md-6">
                             <label for="newPassword" class="form-label">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="newPassword" required="">
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                           </div>
                           <div class="col-md-6">
                             <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" id="confirmPassword" required="">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                           </div>
                         </div>
 
+                        <input type="hidden" name="actualizar_contrasena" value="1">
                         <div class="form-buttons">
                           <button type="submit" class="btn-save">Actualizar Contraseña</button>
                         </div>
